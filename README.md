@@ -1,70 +1,114 @@
-# Getting Started with Create React App
+# Transaction Management Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Your task is to **build a React app** that:
 
-## Available Scripts
+1. Integrates with the provided Transaction Management API to create and show transaction/account data.
+2. Makes the provided E2E tests pass.
+3. Pipeline - a test Runner that executes the Cypress tests on push to a branch other than master/main
 
-In the project directory, you can run:
+Here's the mockup with hints:
 
-### `yarn start`
+![Transaction Management Frontend](https://user-images.githubusercontent.com/1162212/116609549-cbf29b80-a934-11eb-876e-6d5c20061f13.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Feel free to define the UI, but please ensure that the following is in place.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### The form for submitting transactions
 
-### `yarn test`
+```html
+<form data-type="transaction-form">
+  <input data-type="account-id" ... />
+  <input data-type="amount" ... />
+</form>
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Both input **fields should be cleared** after the form is submitted.
 
-### `yarn build`
+#### The transaction list
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Every newly submitted transaction should go on **the top of the list** and should have an enclosing `<div />` with the following structure:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```html
+<div 
+     data-type="transaction"
+     data-account-id="${transaction-account-id}"
+     data-amount="${transaction-amount}"
+     data-balance="${current-account-balance}" ...>
+  ...
+</div>
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `${transaction-account-id}` - account id of the corresponding transaction.
+- `${transaction-amount}` - transaction amount.
+- `${current-account-balance}` - the current account balance right after submitting the transaction (only needed to be initialized for the transactions submitted from the current client).
 
-### `yarn eject`
+## Before you get started
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Boilerplate
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+We have pre-uploaded Create-React-App boilerplate in the repo.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### Get familiar with the API
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<details>
+<summary>Request examples</summary>
 
-## Learn More
+##### Get historical transactions
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+GET https://infra.devskills.app/api/transaction-management/transactions
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+##### Create a new transaction
 
-### Code Splitting
+```
+POST https://infra.devskills.app/api/transaction-management/transactions
+Content-Type: application/json
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+{
+  "account_id": "0afd02d3-6c59-46e7-b7bc-893c5e0b7ac2",
+  "amount": 7
+}
+```
 
-### Analyzing the Bundle Size
+##### Get a transaction by id
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+GET https://infra.devskills.app/api/transaction-management/transactions/7c94635a-40a3-4c87-888a-42c3ce5b9750
+```
 
-### Making a Progressive Web App
+##### Get an account by id
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
+GET https://infra.devskills.app/api/transaction-management/accounts/0afd02d3-6c59-46e7-b7bc-893c5e0b7ac2
+```
 
-### Advanced Configuration
+</details>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+#### Try running the E2E tests locally
 
-### Deployment
+```bash
+npm install
+# Run your app here
+npm run test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## What we expect from you
 
-### `yarn build` fails to minify
+1. Make the provided E2E tests pass.
+2. Implement client-side validation of the form data.
+3. Implement error handling for the cases when the API cannot be reached or returns a server error.
+4. Ensure that the app remains responsive (i.e. doesn't block the UI) while the data is being loaded.
+5. Add instructions that describe how you've made the app responsive.
+6. Unit test one module of choice. There is no need to test the whole app, as we only want to understand what you take into consideration when writing unit tests.
+7. Avoid duplication and extract re-usable modules where it makes sense. We want to see your approach to creating a codebase that is easy to maintain.
+8. Push your code to the new `implementation` branch. We encourage you to commit and push your changes regularly as it's a good way for you to showcase your thinking process.
+9. Create a new pull request, but please **do not merge it**.
+10. Await further instructions from the hiring team.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Need help?
+
+Start with [Troubleshooting](https://www.notion.so/Troubleshooting-d18bdb5d2ac341bb82b21f0ba8fb9546), and in case it didn't help, create a new GitHub issue. We'll get back to you.
+
+## Time estimate
+
+About **8 hours**.
